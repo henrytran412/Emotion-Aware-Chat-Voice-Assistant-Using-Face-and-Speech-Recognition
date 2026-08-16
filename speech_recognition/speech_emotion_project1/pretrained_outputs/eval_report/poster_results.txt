@@ -1,0 +1,16 @@
+Speech Emotion Recognition Evaluation Report
+===========================================
+Model directory: C:\Users\jacob\eng_success\speech_recognition\speech_emotion_project1\pretrained_outputs
+Data directory: C:\Users\jacob\eng_success\speech_recognition\speech_emotion_project1\data\RAVDESS
+Split mode: random
+Seed: 42
+Test samples: 288
+
+Accuracy:           0.2326 (23.26%)
+Balanced Accuracy:  0.2204 (22.04%)
+Macro F1:           0.0977
+Weighted F1:        0.1031
+
+Per-class metrics are in classification_report.csv
+Confusion matrix is in confusion_matrix.csv
+Sample-level predictions are in predictions.csv

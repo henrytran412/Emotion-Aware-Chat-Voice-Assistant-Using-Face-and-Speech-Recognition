@@ -1,0 +1,41 @@
+GPU PC workflow (RTX 4070)
+
+1) Install dependencies
+   cd dataset_CUDA
+   python -m venv .venv
+   .venv\Scripts\activate
+   pip install -r requirements.txt
+
+2) Train emotion model
+   python train.py
+   (defaults now use a stronger model for RTX GPU)
+
+3) Optional test evaluation
+   python test_eval.py
+
+4) Start qwen backend (separate terminal)
+   cd qwen-voice-assistant
+   python -m venv .venv
+   .venv\Scripts\activate
+   pip install -r requirements.txt
+   cd backend
+   python main.py
+
+5) Open UI and create/login user
+   Open http://127.0.0.1:8000
+   Copy the generated user_id from browser localStorage key "emotionAI_user"
+   (or from /api/users response if using API tools)
+
+6) Start emotion bridge (separate terminal, from dataset_CUDA)
+   .venv\Scripts\activate
+   python pc_emotion_bridge.py --backend-url http://127.0.0.1:8000 --user-id <YOUR_USER_ID>
+
+7) Chat in UI
+   The bridge posts face emotion to /api/emotion, and backend now uses this external emotion in /api/chat.
+
+Optional tuning (env vars before train.py):
+   set MODEL_NAME=mobilenetv3_large_100
+   set BATCH_SIZE=32
+   set EPOCHS=30
+   set LR=2e-4
+   set NUM_WORKERS=4

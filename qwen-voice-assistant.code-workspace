@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "qwen-voice-assistant"
+		},
+		{
+			"path": ".venv"
+		},
+		{
+			"path": "dataset_CUDA"
+		}
+	]
+}

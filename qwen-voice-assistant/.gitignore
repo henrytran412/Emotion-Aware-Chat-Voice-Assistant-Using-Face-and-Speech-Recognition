@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+peft-env/
+vibevoice-env/
+.venv/
+venv/
+
+# Model outputs / checkpoints
+qwen_lora/
+qwen_lora_peft/
+checkpoints/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+
+# Hugging Face / caches
+.cache/
+hf_cache/
+**/.cache/
+
+# Audio / generated files
+*.wav
+*.mp3
+*.flac
+outputs/
+tmp/
+temp/
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+*.log

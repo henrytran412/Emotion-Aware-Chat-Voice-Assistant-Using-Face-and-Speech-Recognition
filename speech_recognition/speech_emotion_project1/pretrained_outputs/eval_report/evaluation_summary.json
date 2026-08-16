@@ -1,0 +1,13 @@
+{
+  "model_dir": "C:\\Users\\jacob\\eng_success\\speech_recognition\\speech_emotion_project1\\pretrained_outputs",
+  "data_dir": "C:\\Users\\jacob\\eng_success\\speech_recognition\\speech_emotion_project1\\data\\RAVDESS",
+  "split_mode": "random",
+  "seed": 42,
+  "test_size": 0.2,
+  "val_size": 0.15,
+  "num_test_samples": 288,
+  "accuracy": 0.2326388888888889,
+  "balanced_accuracy": 0.22039473684210528,
+  "f1_macro": 0.09771837805684805,
+  "f1_weighted": 0.10314717683778406
+}

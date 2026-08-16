@@ -1,0 +1,23 @@
+# Backend dependencies
+fastapi>=0.109.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.5.0
+python-multipart>=0.0.6
+
+# LLM dependencies
+torch>=2.1.0
+transformers>=4.36.0
+peft>=0.7.0
+accelerate>=0.25.0
+
+# Training dependencies (optional)
+unsloth>=2024.1
+datasets>=2.16.0
+trl>=0.7.0
+
+# TTS dependencies (VibeVoice)
+# Note: VibeVoice has its own requirements - install in separate environment
+# See: https://github.com/microsoft/VibeVoice
+
+# Utilities
+python-dotenv>=1.0.0

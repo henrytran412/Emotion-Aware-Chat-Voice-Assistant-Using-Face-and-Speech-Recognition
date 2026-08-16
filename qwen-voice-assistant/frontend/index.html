@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ECHO - Emotion-aware Chat and Hearing Operator</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Login/Register Screen -->
+        <div id="auth-screen" class="screen active">
+            <div class="auth-container">
+                <div class="logo bmo-logo">
+                    <div class="logo-icon">E</div>
+                    <h1>ECHO</h1>
+                    <p class="tagline">Emotion-aware Chat and Hearing Operator</p>
+                    <p class="sub-tagline">BMO-inspired console mode</p>
+                </div>
+
+                <form id="register-form" class="auth-form">
+                    <div class="mode-picker">
+                        <p class="mode-label">Choose chat type</p>
+                        <div class="mode-buttons">
+                            <button type="button" class="mode-btn" id="mode-text-btn" data-mode="text">
+                                Text to Text
+                            </button>
+                            <button type="button" class="mode-btn" id="mode-voice-btn" data-mode="voice">
+                                Voice to Voice (VibeVoice)
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user-name">Name</label>
+                        <input
+                            type="text"
+                            id="user-name"
+                            placeholder="Enter your name"
+                            required
+                            maxlength="50"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="user-birthday">Birthday</label>
+                        <input
+                            type="date"
+                            id="user-birthday"
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="start-chat-btn" disabled>
+                        Start Chatting
+                    </button>
+                </form>
+
+                <p class="privacy-note">
+                    Your data stays on this device. In Voice mode, ECHO answers using VibeVoice audio.
+                </p>
+            </div>
+        </div>
+
+        <!-- Chat Screen -->
+        <div id="chat-screen" class="screen">
+            <!-- Header -->
+            <header class="chat-header">
+                <div class="header-left">
+                    <div class="user-avatar" id="user-avatar">U</div>
+                    <div class="user-info">
+                        <span class="user-name" id="display-name">User</span>
+                        <span class="emotion-badge" id="emotion-badge">neutral</span>
+                        <span class="mode-badge" id="mode-badge">Text mode</span>
+                    </div>
+                </div>
+
+                <div class="header-right">
+                    <button class="icon-btn mode-switch-btn" id="mode-switch-btn" title="Switch Chat Mode">
+                        <span id="mode-switch-label">Voice</span>
+                    </button>
+                    <button class="icon-btn" id="camera-toggle" title="Toggle Camera">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M23 7l-7 5 7 5V7z"/>
+                            <rect x="1" y="5" width="15" height="14" rx="2"/>
+                        </svg>
+                    </button>
+                    <button class="icon-btn" id="mic-toggle" title="Toggle Microphone">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                            <line x1="12" y1="19" x2="12" y2="23"/>
+                            <line x1="8" y1="23" x2="16" y2="23"/>
+                        </svg>
+                    </button>
+                    <button class="icon-btn" id="settings-btn" title="Settings">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M12 1v4m0 14v4M4.22 4.22l2.83 2.83m9.9 9.9l2.83 2.83M1 12h4m14 0h4M4.22 19.78l2.83-2.83m9.9-9.9l2.83-2.83"/>
+                        </svg>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Camera Preview (hidden by default) -->
+            <div id="camera-preview" class="camera-preview hidden">
+                <video id="camera-video" autoplay playsinline muted></video>
+                <img id="camera-bridge-image" class="camera-bridge-image hidden" alt="Bridge camera preview">
+                <div class="camera-overlay">
+                    <span class="camera-status">Camera Active</span>
+                </div>
+            </div>
+
+            <main class="chat-main">
+                <!-- Chat Messages -->
+                <section class="chat-messages" id="chat-messages">
+                    <div class="welcome-message">
+                        <div class="assistant-avatar">EC</div>
+                        <div class="message-content">
+                            <p>Hello! I am ECHO, your emotion-aware assistant.</p>
+                            <p>Choose Text mode for ChatGPT-style typing, or Voice mode for live voice conversation.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="voice-mode-stage" class="voice-mode-stage hidden">
+                    <div class="voice-stage-card">
+                        <h2>Voice to Voice</h2>
+                        <p class="voice-stage-caption">Talk with ECHO like a real friend using VibeVoice.</p>
+                        <div id="voice-emotion-pill" class="voice-emotion-pill" data-emotion="neutral">Neutral 0%</div>
+                        <div id="emotion-source-label" class="emotion-source-label">Source: Browser detector</div>
+                        <div class="prediction-panel" id="prediction-panel">
+                            <div class="prediction-row">
+                                <span class="prediction-key">Face</span>
+                                <span class="prediction-value" id="face-prediction">--</span>
+                            </div>
+                            <div class="prediction-row">
+                                <span class="prediction-key">Voice</span>
+                                <span class="prediction-value" id="voice-prediction">--</span>
+                            </div>
+                            <div class="prediction-row prediction-row-final">
+                                <span class="prediction-key">Final</span>
+                                <span class="prediction-value" id="final-prediction">Neutral 0%</span>
+                            </div>
+                        </div>
+                        <div class="voice-orb bmo-face" id="voice-orb" data-emotion="neutral" data-state="idle">
+                            <span class="wave-ring ring-1"></span>
+                            <span class="wave-ring ring-2"></span>
+                            <span class="wave-ring ring-3"></span>
+                            <div class="bmo-face-shell">
+                                <div class="bmo-face-screen">
+                                    <div class="bmo-eyes">
+                                        <span class="eye"></span>
+                                        <span class="eye"></span>
+                                    </div>
+                                    <div class="bmo-mouth"></div>
+                                    <div class="bmo-cheek cheek-left"></div>
+                                    <div class="bmo-cheek cheek-right"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="voice-status" id="voice-status">Ready. Press Start Voice Chat.</p>
+                        <button type="button" class="btn btn-primary voice-session-btn" id="voice-session-btn">
+                            Start Voice Chat
+                        </button>
+                    </div>
+                </section>
+            </main>
+
+            <!-- Input Area -->
+            <footer class="chat-input-area" id="chat-input-area">
+                <div class="input-container">
+                    <button class="icon-btn voice-btn" id="voice-input-btn" title="Voice Input">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        </svg>
+                    </button>
+
+                    <textarea
+                        id="message-input"
+                        placeholder="Type your message..."
+                        rows="1"
+                    ></textarea>
+
+                    <button class="icon-btn send-btn" id="send-btn" title="Send Message">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"/>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="input-status" id="input-status">
+                    <span class="typing-indicator hidden" id="typing-indicator">
+                        <span></span><span></span><span></span>
+                        Assistant is thinking...
+                    </span>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <h2>Settings</h2>
+            <div class="form-group">
+                <label for="server-url">Server URL</label>
+                <input type="text" id="server-url" placeholder="http://192.168.1.100:8000">
+                <small>Leave empty if running on same machine</small>
+            </div>
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="enable-face-emotion" checked>
+                    Enable face emotion detection
+                </label>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeSettings()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveSettings()">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Player (hidden) -->
+    <audio id="tts-audio" style="display: none;"></audio>
+
+    <!-- Face emotion detection library -->
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/face-landmarks-detection"></script>
+
+    <script src="/static/emotion_detector.js"></script>
+    <script src="/static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{
+  "timestamp": "2026-04-16T21:31:13.151482",
+  "device": "cuda",
+  "model_path": "Qwen/Qwen3-4B-Instruct-2507",
+  "adapter_path": "../qwen_lora",
+  "runs": 10,
+  "warmup": 2,
+  "message": "Explain in three short points how emotion-aware AI can help customer support.",
+  "max_new_tokens": 120,
+  "temperature": 0.6,
+  "top_p": 0.9,
+  "latency_ms": {
+    "min": 20604.534099999,
+    "p50": 24966.947699998855,
+    "p95": 32098.525230005904,
+    "p99": 32873.962566010014,
+    "max": 33067.82190001104,
+    "mean": 26234.453790001862
+  },
+  "output_tokens": {
+    "total": 731,
+    "mean_per_run": 73.1
+  },
+  "throughput_tokens_per_sec": 2.786412119922197,
+  "sample_reply": "1. Detects customer emotions in text or voice to identify frustration, anger, or happiness, enabling faster and more empathetic responses. \n2. Adjusts tone and response style in real time to de-escalate tense situations and build trust. \n3. Provides agents with emotional context, improving decision-making and personalization during support interactions."
+}
